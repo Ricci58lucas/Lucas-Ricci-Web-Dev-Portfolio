@@ -1,0 +1,133 @@
+<a tabindex="-1" class="navbar-logo-container clickable" href="/">
+    <img class="navbar-logo" src="/res/imgs/greenchem-logo.png?" alt="greenchem-logo">
+</a>
+
+<ul id="nav-options-panel" class="nav-options-container">
+    <li><a tabindex="-1" id="virtual-prospects-anchor" href="/">VIRTUAL PROSPECTS</a></li>
+    <li><a tabindex="-1" id="accounts-anchor" href="/accounts">ACCOUNTS</a></li>
+    <li><a tabindex="-1" id="contacts-anchor" href="/contacts">CONTACTS</a></li>
+    <li><a tabindex="-1" id="marketing-anchor" href="/marketing">MARKETING</a></li>
+    <li><a tabindex="-1" id="reports-anchor" href="/reports">REPORTS</a></li>
+    <li><a tabindex="-1" id="pim-anchor" href="/pim">PIM</a></li>
+    <li><a tabindex="-1" id="job-details-anchor" href="/job-details">JOB DETAILS</a></li>
+    <li><a tabindex="-1" id="job-applicants-anchor" href="/job-applicants">JOB APPLICANTS</a></li>
+    <li><a tabindex="-1" id="settings-anchor" href="/settings">SETTINGS</a></li>
+</ul>
+
+<div class="navbar-buttons-group">
+    <button tabindex="-1" id="notifications-button" class="navbar-icon-button clickable"
+        onclick="toggleNotificationPanel()">
+        <img class="navbar-icon" src="/res/imgs/icons/notifications-ic.png?" alt="burger-ic">
+    </button>
+    <button tabindex="-1" id="calendar-button" class="navbar-icon-button clickable" onclick="toggleCalendarPanel()">
+        <img class="navbar-icon" src="/res/imgs/icons/calendar-ic.png?" alt="burger-ic">
+    </button>
+    <!-- <button tabindex="-1" id="logout-button" class="navbar-icon-button clickable" onclick="logout();">
+        <img class="navbar-icon" src="/res/imgs/icons/logout-ic.png?" alt="burger-ic">
+    </button> -->
+    <!-- <button tabindex="-1" id="messages-button" class="navbar-icon-button clickable" onclick="toggleMessagePanel()">
+        <img class="navbar-icon" src="/res/imgs/icons/messages-ic.png?" alt="burger-ic">
+    </button> -->
+    <button tabindex="-1" id="burger-button" class="navbar-icon-button clickable" onclick="toggleNavMenu()">
+        <img class="navbar-icon" src="/res/imgs/icons/burger-ic.png?" alt="burger-ic">
+    </button>
+</div>
+
+<div id="notification-panel" class="top-panel">
+    <h1>Notifications</h1>
+    <div id="notification-container"></div>
+</div>
+
+<div id="calendar-panel" class="top-panel">
+    <div id="calendar-section" class="calendar-section">
+        <input id="nav-calendar" style="display: none;">
+    </div> <!-- calendar -->
+    <div class="schedule-section">
+        <span id="schedule-date">Today Schedule</span>
+    </div>
+    <div id="activity-section">
+        <ul id="activity-list" class="activity-list"></ul>
+    </div>
+    <div class="actions-section">
+        <button id="new-meeting-button" class="clickable" onclick="toggleMeeting(true)">New Meeting</button>
+        <button id="new-call-button" class="clickable" onclick="toggleCall(true)">Schedule a Call</button>
+    </div>
+
+    <div id="new-meeting-section">
+        <button class="go-back-button clickable" onclick="toggleMeeting(false)">&lt; Go Back</button>
+        <input id="meeting-subject" type="text" placeholder="Subject" oninput="checkSaveMeetingAvailability();">
+
+        <div class="meeting-input-group">
+            <span>Meeting Date</span>
+            <input id="meeting-due-date" class="clickable" type="datetime-local"
+                onchange="checkSaveMeetingAvailability();">
+        </div>
+
+        <label class="meeting-input-group">
+            <span>All day?</span>
+            <input type="checkbox" id="all-day-meeting-checked" onchange="allDayChecked(this);">
+        </label>
+
+        <div class="meeting-input-group">
+            <span>Host</span>
+            <select id="host-input" onchange="checkSaveMeetingAvailability();">
+                <option value="select">Select</option>
+            </select>
+        </div>
+        <div class="meeting-input-group">
+            <span>Participants</span>
+            <select id="participants-input" onchange="addParticipant(this); checkSaveMeetingAvailability();">
+                <option value="select">Select</option>
+            </select>
+        </div>
+        <ul id="meeting-participant-list">
+            <!-- <li><span>Martin Json</span> <button class="clickable" onclick="removeParticipant()">X</button></li>
+            <li><span>Jane Sanders</span> <button class="clickable" onclick="removeParticipant()">X</button></li>
+            <li><span>John D Jackson</span> <button class="clickable" onclick="removeParticipant()">X</button></li>
+            <li><span>John James</span> <button class="clickable" onclick="removeParticipant()">X</button></li>
+            <li><span>Tom Tars</span> <button class="clickable" onclick="removeParticipant()">X</button></li>
+            <li><span>Mary Jones</span> <button class="clickable" onclick="removeParticipant()">X</button></li> -->
+        </ul>
+
+        <button id="save-meeting-button" class="save-button deactivated" onclick="saveMeeting()" disabled>Save</button>
+    </div>
+
+    <div id="new-call-section">
+        <button class="go-back-button clickable" onclick="toggleCall(false)">&lt; Go Back</button>
+        <input id="call-subject" type="text" placeholder="Subject" oninput="checkSaveCallAvailability();">
+
+        <div class="meeting-input-group">
+            <span>Caller</span>
+            <select id="caller-input" onchange="checkSaveCallAvailability();">
+                <option value="select">Select</option>
+            </select>
+        </div>
+
+        <div class="meeting-input-group">
+            <span>Call To</span>
+            <select id="call-to" onchange="setCallRecipient(this); checkSaveCallAvailability();">
+                <option value="select">Select</option>
+            </select>
+        </div>
+
+        <div class="meeting-input-group">
+            <span>Related To</span>
+            <span id="related-to">-</span>
+            <span id="related-to-id" style="display: none;">-1</span>
+        </div>
+
+        <div class="meeting-input-group">
+            <span>Call Date</span>
+            <input id="call-due-date" class="clickable" type="datetime-local" onchange="checkSaveCallAvailability();">
+        </div>
+
+        <label class="meeting-input-group">
+            <span>All day?</span>
+            <input type="checkbox" id="all-day-call-checked" onchange="allDayChecked(this);">
+        </label>
+
+        <button id="save-call-button" class="save-button deactivated" onclick="saveCall()" disabled>Save</button>
+    </div>
+</div>
+
+<div id="messages-panel" style="display: none;"></div>
